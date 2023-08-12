@@ -71,7 +71,7 @@
 </script>
 
 <div class="month-controls">
-  <span class="control-button" on:click={decrementMonth}
+  <span class="control-button" on:click={decrementMonth} on:keypress={decrementMonth}
     ><svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
@@ -82,12 +82,11 @@
         d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414zm-6 0a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z"
         clip-rule="evenodd"
       />
-    </svg></span
-  >
+    </svg></span>
   <span class="current-month"
     >{moment(`${year}-${month + 1}-01 00:00:00`).format("MMM YYYY")}</span
   >
-  <span class="control-button" on:click={incrementMonth}
+  <span class="control-button" on:click={incrementMonth} on:keypress={incrementMonth}
     ><svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
@@ -121,6 +120,7 @@
               ? 'selected-day'
               : ''} {moment().isAfter(day, 'day') ? 'past-day' : ''}"
             on:click={() => dispatch("selectDate", day)}
+            on:keypress={() => dispatch("selectDate", day)}
           >
             {day.date()}
           </div>

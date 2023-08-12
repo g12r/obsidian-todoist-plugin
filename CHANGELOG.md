@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### ✨ Features
+- Added a button for Add Todo from the task list. The task list will refresh after the add dialog closes. 
+- Added the optional ability to append the task date to the task name. Enable this and set the date format used in settings.
+- Added the ability to toggle the task list heading on and off.
+- Added the ability to toggle each task's description on and off. (Previously submitted PR)
+
+### 🔁 Changes
+- Modified the TodoistQuery underlying html structure to render correctly with no heading and to emulate the markdown block edit button. Updated button style and icons to emulate Obsidian's markdown edit block button, validated with default themes.  
+- Updated the refresh todos button icon and style to align with the other two
+- Added on:keypress methods to clear a11y warnings
+- Removed an unused import
+
+### 🐛 Bug Fixes
+- Added component parameter to the call that seems to be creating the Component should be passed to renderMarkdown console error (MarkdownRenderer.renderMarkdown(...)).
+
 ## [1.11.1] - 2023-04-09
 
 ### 🐛 Bug Fixes

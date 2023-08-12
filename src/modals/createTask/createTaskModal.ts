@@ -4,14 +4,22 @@ import CreateTaskModalContent from "./CreateTaskModalContent.svelte";
 
 export default class CreateTaskModal extends Modal {
   private readonly modalContent: CreateTaskModalContent;
+  private closeCallback: () => void;
 
-  constructor(app: App, api: TodoistApi, withPageLink: boolean) {
+  constructor(
+    app: App,
+    api: TodoistApi,
+    withPageLink: boolean,
+    closeCallback?: () => void
+  ) {
     super(app);
 
     this.titleEl.innerText = "Create new Todoist task";
 
     const [initialValue, initialCursorPosition] =
       this.getInitialContent(withPageLink);
+
+    this.closeCallback = closeCallback;
 
     this.modalContent = new CreateTaskModalContent({
       target: this.contentEl,
@@ -27,6 +35,9 @@ export default class CreateTaskModal extends Modal {
   }
 
   onClose() {
+    if (this.closeCallback) {
+      this.closeCallback();
+    }
     super.onClose();
     this.modalContent.$destroy();
   }

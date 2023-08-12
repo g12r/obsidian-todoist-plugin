@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { MarkdownRenderer } from "obsidian";
+  import { Component, MarkdownRenderer } from "obsidian";
   import { onMount } from "svelte";
 
   export let content: string;
@@ -10,7 +10,7 @@
   let containerEl: HTMLDivElement;
 
   onMount(async () => {
-    await MarkdownRenderer.renderMarkdown(content, containerEl, "", null);
+    await MarkdownRenderer.renderMarkdown(content, containerEl, "", this);
 
     if (containerEl.childElementCount > 1) {
       return;

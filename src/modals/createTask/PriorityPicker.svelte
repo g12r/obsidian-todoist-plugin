@@ -37,6 +37,9 @@
       on:click={() => {
         selected = option.value;
       }}
+      on:keypress={() => {
+        selected = option.value;
+      }}
     >
       <span>{option.label}</span>
     </div>

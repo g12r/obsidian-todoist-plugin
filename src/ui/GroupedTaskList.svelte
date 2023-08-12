@@ -36,6 +36,7 @@
       ? 'is-collapsed'
       : ''} todoist-project-title"
     on:click={() => toggleFold(project.projectID)}
+    on:keypress={() => toggleFold(project.projectID)}
   >
     <CollapseIndicator />
     <span>
@@ -59,6 +60,7 @@
             ? 'is-collapsed'
             : ''} todoist-section-title"
           on:click={() => toggleFold(section.sectionID)}
+          on:keypress={() => toggleFold(section.sectionID)}
         >
           <CollapseIndicator />
           <span>

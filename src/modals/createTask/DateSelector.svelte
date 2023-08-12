@@ -83,12 +83,21 @@
       drawerOpen = true;
     }
   }}
+  on:keypress={(ev) => {
+    if (!drawerOpen) {
+      ev.stopPropagation();
+      drawerOpen = true;
+    }
+  }}
 >
   {#if selected}
     <span class="date-preview">{selected.format("MMM D, YYYY")}</span>
     <span
       class="reset-date-button"
       on:click|stopPropagation={() => {
+        setDate(null);
+      }}
+      on:keypress|stopPropagation={() => {
         setDate(null);
       }}
       ><svg
@@ -114,6 +123,9 @@
         on:click={() => {
           setDate(moment());
         }}
+        on:keypress={() => {
+          setDate(moment());
+        }}
       >
         Today
       </div>
@@ -122,6 +134,9 @@
         on:click={() => {
           setDate(moment().add(1, "day"));
         }}
+        on:keypress={() => {
+          setDate(moment().add(1, "day"));
+        }}        
       >
         Tomorrow
       </div>

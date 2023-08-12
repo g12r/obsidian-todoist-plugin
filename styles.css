@@ -1,17 +1,41 @@
+.todoist-list {
+  text-align: left;
+  display: inline-block;
+  padding-top: 4px;
+}
+
 .todoist-query-title {
   display: inline;
   font-size: 1.25em;
 }
 
-.todoist-refresh-button {
-  display: inline;
-  margin-left: 8px;
-  margin-right: 8px;
-  float: right;
+body {
+--block-button-spacing: 38px;
+}
+
+.block-button {
+  /* The default markdown edit-block icon has 7px of left padding for whatever reason, which makes icons look off-center */
+  padding-left: 4px !important;
+  /* overriding edit-block-button default opacity to always be visible */
+  opacity: 1 !important;
+  right: calc(var(--block-button-spacing) * var(--slots-from-right)) !important;
+}
+
+.block-button-1 {
+  --slots-from-right: 1;
+}
+
+.block-button-2 {
+  --slots-from-right: 2;
 }
 
 .todoist-refresh-spin {
   animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {transform:rotate(0deg);}
+  to {transform:rotate(360deg);}
 }
 
 @-webkit-keyframes spin {
@@ -78,50 +102,49 @@ ul.todoist-task-list {
 }
 
 .theme-dark {
-    --todoist-p1-border: #ff7066;
-    --todoist-p1-border-hover: #ff706680;
-    --todoist-p1-background: rgba(255,112,102, .1);
+  --todoist-p1-border: #ff7066;
+  --todoist-p1-border-hover: #ff706680;
+  --todoist-p1-background: rgba(255, 112, 102, 0.1);
 
-    --todoist-p2-border: #ff9a14;
-    --todoist-p2-border-hover: #ff9a1480;
-    --todoist-p2-background: rgba(255,154,20, .1);
+  --todoist-p2-border: #ff9a14;
+  --todoist-p2-border-hover: #ff9a1480;
+  --todoist-p2-background: rgba(255, 154, 20, 0.1);
 
-    --todoist-p3-border: #5297ff;
-    --todoist-p3-border-hover: #5297ff80;
-    --todoist-p3-background: rgba(82,151,255, .1);
+  --todoist-p3-border: #5297ff;
+  --todoist-p3-border-hover: #5297ff80;
+  --todoist-p3-background: rgba(82, 151, 255, 0.1);
 }
 
 .theme-light {
-    --todoist-p1-border: #d1453b;
-    --todoist-p1-border-hover: #d1453b80;
-    --todoist-p1-background: rgba(209,69,59, .1);
+  --todoist-p1-border: #d1453b;
+  --todoist-p1-border-hover: #d1453b80;
+  --todoist-p1-background: rgba(209, 69, 59, 0.1);
 
-    --todoist-p2-border: #eb8909;
-    --todoist-p2-border-hover: #eb890980;
-    --todoist-p2-background: rgba(235,137,9, .1);
+  --todoist-p2-border: #eb8909;
+  --todoist-p2-border-hover: #eb890980;
+  --todoist-p2-background: rgba(235, 137, 9, 0.1);
 
-    --todoist-p3-border: #246fe0;
-    --todoist-p3-border-hover: #246fe080;
-    --todoist-p3-background: rgba(36,111,224, .1);
+  --todoist-p3-border: #246fe0;
+  --todoist-p3-border-hover: #246fe080;
+  --todoist-p3-background: rgba(36, 111, 224, 0.1);
 }
 
 .todoist-p1 input {
-    --checkbox-border-color: var(--todoist-p1-border);
-    --checkbox-border-color-hover: var(--todoist-p1-border-hover);
-    background-color: var(--todoist-p1-background);
-
+  --checkbox-border-color: var(--todoist-p1-border);
+  --checkbox-border-color-hover: var(--todoist-p1-border-hover);
+  background-color: var(--todoist-p1-background);
 }
 
 .todoist-p2 input {
-    --checkbox-border-color: var(--todoist-p2-border);
-    --checkbox-border-color-hover: var(--todoist-p2-border-hover);
-    background-color: var(--todoist-p2-background);
+  --checkbox-border-color: var(--todoist-p2-border);
+  --checkbox-border-color-hover: var(--todoist-p2-border-hover);
+  background-color: var(--todoist-p2-background);
 }
 
 .todoist-p3 input {
-    --checkbox-border-color: var(--todoist-p3-border);
-    --checkbox-border-color-hover: var(--todoist-p3-border-hover);
-    background-color: var(--todoist-p3-background);
+  --checkbox-border-color: var(--todoist-p3-border);
+  --checkbox-border-color-hover: var(--todoist-p3-border-hover);
+  background-color: var(--todoist-p3-background);
 }
 
 .todoist-task-description {
@@ -130,3 +153,7 @@ ul.todoist-task-list {
   margin-left: 28px;
 }
 
+.todoist-task-inline-small {
+  font-size: 80%;
+  color: var(--text-muted);
+}

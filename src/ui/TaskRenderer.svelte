@@ -125,8 +125,13 @@
       }}
     />
     <MarkdownRenderer class="todoist-task-content" content={sanitizedContent} />
+    {#if settings.renderAppendDate && todo.date}
+      <span class="todoist-task-inline-small">
+        &ndash;&nbsp;{todo.rawDatetime.format(settings.appendedDateFormat)}
+      </span>
+    {/if}
   </div>
-  {#if todo.description != ""}
+  {#if settings.renderDescription && todo.description != ""}
     <DescriptionRenderer description={todo.description} />
   {/if}
   <div class="task-metadata">

@@ -12,6 +12,7 @@
   import ErrorDisplay from "./ErrorDisplay.svelte";
   import NoTaskDisplay from "./NoTaskDisplay.svelte";
   import { APP_CONTEXT_KEY } from "../utils";
+  import CreateTaskModal from "../modals/createTask/createTaskModal";
 
   export let query: Query;
   export let api: TodoistApi;
@@ -63,6 +64,7 @@
   let tasks: Result<Task[], Error> = Result.Ok([]);
   let groupedTasks: Result<Project[], Error> = Result.Ok([]);
   let fetching: boolean = false;
+  let adding: boolean = false;
 
   onMount(async () => {
     await fetchTodos();
@@ -94,58 +96,113 @@
       fetching = false;
     }
   }
+
+  // Not sure this really needs to be async -- could use a way to force close modal if failure
+  async function addTodo() {
+    if (adding) {
+      return;
+    }
+
+    try {
+      adding = true;
+      new CreateTaskModal(app, api, false, fetchTodos);
+    } finally {
+      adding = false;
+    }
+  }
 </script>
 
-<h4 class="todoist-query-title">{title}</h4>
-<button
-  class="todoist-refresh-button"
+<div class="todoist-list">
+  {#if settings.renderHeading && title}
+    <h4 class="todoist-query-title">{title}</h4>
+  {/if}
+  {#if fetchedOnce}
+    {#if query.group}
+      {#if groupedTasks.isOk()}
+        {#if groupedTasks.unwrap().length == 0}
+          <NoTaskDisplay />
+        {:else}
+          {#each groupedTasks.unwrap() as project (project.projectID)}
+            <GroupedTaskList
+              {project}
+              {settings}
+              {api}
+              sorting={query.sorting ?? []}
+            />
+          {/each}
+        {/if}
+      {:else}
+        <ErrorDisplay error={groupedTasks.unwrapErr()} />
+      {/if}
+    {:else if tasks.isOk()}
+      <TaskList
+        tasks={tasks.unwrap()}
+        {settings}
+        {api}
+        sorting={query.sorting ?? []}
+      />
+    {:else}
+      <ErrorDisplay error={tasks.unwrapErr()} />
+    {/if}
+  {/if}
+</div>
+<div
+  class="edit-block-button block-button block-button-1"
+  aria-label="Refresh tasks"
   on:click={async () => {
     await fetchTodos();
   }}
-  disabled={fetching}
+  on:keypress={async () => {
+    await fetchTodos();
+  }}
 >
   <svg
-    class={fetching ? "todoist-refresh-spin" : ""}
-    width="20px"
-    height="20px"
-    viewBox="0 0 20 20"
-    fill="currentColor"
     xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class={fetching
+      ? "svg-icon lucide-code-2 todoist-refresh-spin"
+      : "svg-icon lucide-code-2"}
   >
     <path
-      fill-rule="evenodd"
-      d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
-      clip-rule="evenodd"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4m-4 4a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"
     />
   </svg>
-</button>
-<br />
-{#if fetchedOnce}
-  {#if query.group}
-    {#if groupedTasks.isOk()}
-      {#if groupedTasks.unwrap().length == 0}
-        <NoTaskDisplay />
-      {:else}
-        {#each groupedTasks.unwrap() as project (project.projectID)}
-          <GroupedTaskList
-            {project}
-            {settings}
-            {api}
-            sorting={query.sorting ?? []}
-          />
-        {/each}
-      {/if}
-    {:else}
-      <ErrorDisplay error={groupedTasks.unwrapErr()} />
-    {/if}
-  {:else if tasks.isOk()}
-    <TaskList
-      tasks={tasks.unwrap()}
-      {settings}
-      {api}
-      sorting={query.sorting ?? []}
+</div>
+<div
+  class="edit-block-button block-button block-button-2"
+  aria-label="Add task"
+  on:click={async () => {
+    await addTodo();
+  }}
+  on:keypress={async () => {
+    await addTodo();
+  }}
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="0"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="svg-icon lucide-code-2"
+  >
+    <path
+      fill="currentColor"
+      d="M18 12.998h-5v5a1 1 0 0 1-2 0v-5H6a1 1 0 0 1 0-2h5v-5a1 1 0 0 1 2 0v5h5a1 1 0 0 1 0 2z"
     />
-  {:else}
-    <ErrorDisplay error={tasks.unwrapErr()} />
-  {/if}
-{/if}
+  </svg>
+</div>
